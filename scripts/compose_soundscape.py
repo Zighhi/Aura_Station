@@ -216,7 +216,7 @@ def main(theme, input_dir="audio_samples/raw", output_dir="audio_samples/process
         }
     }
     
-    save_manifest(output_path, metadata)
+    save_manifest(output_wav_path, metadata)
     
     print("===== COMPOSITION COMPLETE! =====")
 

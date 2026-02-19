@@ -78,6 +78,7 @@ To generate soundscape(s) for specific themes, run the following command from th
 - Filenames follow the pattern: `base_sample_{theme}_{timestamp}.wav`.
 
 ## Documentation
+- **[User Manual](docs/USER_MANUAL.md):** Simple, step-by-step guide for generating soundscapes.
 - **[Technical Deep Dive](docs/TECHNICAL_Deep_Dive.md):** A comprehensive architectural overview of the V6 Engine, detailing the signal flow, DSP algorithms, and granular pulse logic.
 
 ## Current Status & Progress (V6 "Organic" Engine)
