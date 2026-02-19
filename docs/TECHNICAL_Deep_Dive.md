@@ -108,3 +108,22 @@ python scripts/generate_soundscape.py Water --type percussive --count 5
 python scripts/compose_soundscape.py Water --duration 10 --count 1
 ```
 This command triggers the entire V6 Engine, automatically selecting samples, applying the DSP chain, and saving the output to `audio_samples/processed/water/{id}/`.
+
+---
+
+## 6. Roadmap: V10 Mastering Pipeline (Streaming Compliance)
+
+To ensure all soundscapes meet YouTube/Spotify loudness standards (-14 LUFS), a dedicated mastering stage is planned.
+
+### 6.1. Targets
+*   **Integrated Loudness:** -14 LUFS (+/- 1.0 LU).
+*   **True Peak:** -1.0 dBTP (Safety margin for AAC transcoding).
+
+### 6.2. Signal Flow
+1.  **Corrective EQ:** High-Pass @ 30Hz to remove invisible sub-sonic energy.
+2.  **Stereo Imaging:** Force frequencies < 120Hz to MONO to prevent phase cancellation on playback systems.
+3.  **Loudness Normalization:**
+    *   Measure Integrated LUFS using `pyloudnorm`.
+    *   Calculate required Gain offset.
+    *   Apply Gain.
+4.  **True Peak Limiting:** Final safety wall to catch inter-sample peaks.
