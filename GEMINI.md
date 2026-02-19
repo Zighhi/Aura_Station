@@ -8,11 +8,11 @@ The pipeline leverages modern Machine Learning models to transform high-level th
 
 ### Main Technologies
 - **Python:** The core programming language.
-- **PyTorch:** Used for running the underlying machine learning models.
+- **PyTorch:** Used for running the underlying machine learning models with GPU acceleration.
 - **Transformers (Hugging Face):** Provides the `pipeline` API for text-generation and text-to-audio synthesis.
 - **Models:**
-    - **Prompt Generation:** `gpt2-medium` (expands themes into evocative descriptions).
-    - **Audio Synthesis:** `facebook/musicgen-tiny` (default in main pipeline) or `facebook/musicgen-small` (for higher quality).
+    - **Hybrid Prompt Generation:** Combines `src/prompt_engineering.py` (structured agents) with `gpt2-medium` (creative expansion).
+    - **Audio Synthesis:** `facebook/musicgen-small` (optimized for speed/quality balance).
 - **SciPy:** Used for saving the generated audio data as standard `.wav` files.
 
 ## Project Structure
@@ -49,11 +49,16 @@ The pipeline leverages modern Machine Learning models to transform high-level th
    ```
 
 ### Running the Pipeline
-To generate a soundscape for a specific theme, run the following command from the project root:
+To generate soundscape(s) for specific themes, run the following command from the project root:
 ```bash
-.\\.venv\\Scripts\\python.exe scripts/generate_soundscape.py [Theme]
+.\\.venv\\Scripts\\python.exe scripts/generate_soundscape.py [Theme1] [Theme2]... [--count N]
 ```
-*Available themes:* `Water`, `Fire`, `Earth`.
+*Available themes:* `Water`, `Fire`, `Earth`, `All`.
+
+*Example (5 samples per theme):*
+```bash
+.\\.venv\\Scripts\\python.exe scripts/generate_soundscape.py All --count 5
+```
 
 ### Testing
 - To test the prompt agents independently: `python src/prompt_engineering.py`
@@ -72,7 +77,15 @@ To generate a soundscape for a specific theme, run the following command from th
 - Generated audio is saved as 16-bit PCM WAV files in `audio_samples/raw/{theme}/`.
 - Filenames follow the pattern: `base_sample_{theme}_{timestamp}.wav`.
 
-## Current Status & Blockers
-- **Space Constraint:** The `E:` drive is nearly full, preventing the installation of the GPU-enabled PyTorch (~2.5 GB).
-- **GPU Acceleration:** Currently limited by disk space; once resolved, the pipeline should be configured to use `device=0` (GPU) for significantly faster generation.
-- **Quality Upgrades:** Future plans include switching the default model to `musicgen-small` or `musicgen-medium` once resources permit.
+## Current Status & Progress
+
+- **GPU Acceleration:** Successfully enabled (using `device=0`). The pipeline is running efficiently on the GPU.
+- **Hybrid Prompting:** Implemented a sophisticated prompting strategy combining specialized `PromptAgent` classes with `gpt2-medium` expansion.
+- **Impact-Free Endings:** Implemented a "Generate-and-Trim" strategy (generating 33s, trimming to 30s) to remove unwanted climax/impact sounds at the end of samples.
+- **Study Optimization:** All prompts are now tuned for study-safe, steady-state, and non-distracting textures.
+- **Batch Processing:** The script now supports multi-theme batch generation via CLI.
+
+## Next Steps
+- **Audio Post-Processing:** Develop scripts for looping, layering, and mixing these base samples into 1-hour+ soundscapes.
+- **Visual Integration:** Explore automated video generation to accompany the audio for the YouTube channel.
+- **Quality Upgrades:** Monitor performance and consider moving to `musicgen-medium` if generation speed allows for longer source material.
