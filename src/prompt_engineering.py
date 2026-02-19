@@ -137,11 +137,30 @@ class PercussivePromptAgent(PromptAgent):
     def generate_prompt(self, theme):
         """Generates a rhythmic prompt tailored to the specific theme."""
         if theme == "Water":
-            elements = ["water droplets hitting a cave floor", "rain tapping on a leaf", "rhythmic stream bubbles", "ice cracking gently"]
+            # V9: Added tonal variety (Deep vs High)
+            elements = [
+                "deep submerged heavy thuds underwater", # Bass
+                "tiny water droplets hitting a metal pan", # High
+                "rhythmic stream bubbles", 
+                "ice cracking gently",
+                "glacier shifting impact"
+            ]
         elif theme == "Fire":
-            elements = ["crackling wood embers", "rhythmic fire popping", "dry leaves crunching", "sparking charcoal"]
+            elements = [
+                "heavy wooden logs colliding", # Bass
+                "sharp crackling charcoal", # High
+                "dry leaves crunching rhythmically", 
+                "rhythmic fire popping",
+                "torch whoosh impact"
+            ]
         elif theme == "Earth":
-            elements = ["deep wood blocks", "stone shuffling on gravel", "hollow log tapping", "distant seismic thuds"]
+            elements = [
+                "heavy seismic thuds", # Bass
+                "gravel crunching under boots", # Texture
+                "hollow log tapping", 
+                "stones clicking together",
+                "deep drum-like ground impact"
+            ]
         else:
             elements = ["soft metallic chimes", "wooden shaker", "clay pot percussion"]
 

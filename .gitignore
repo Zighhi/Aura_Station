@@ -23,6 +23,7 @@ Thumbs.db
 
 # Media
 audio_samples/
+review_packs/
 
 # Local Cache
 .cache/

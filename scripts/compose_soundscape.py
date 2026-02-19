@@ -132,17 +132,17 @@ def main(theme, input_dir="audio_samples/raw", output_dir="audio_samples/process
     
     # 4. Mix
     print("--- Mixing Layers... ---")
-    # Mix Ratios: Drone (70%), Body (50%), Texture (40%), Binaural (12% - Boosted), Pulse (30%)
+    # Mix Ratios (V8 Thickener): Drone (80%), Body (40% - Full Range), Texture (40%), Binaural (12%), Pulse (30%)
     
     # Ensure all layers match the shortest length
     min_len = min(L1.shape[1], L2.shape[1], L3.shape[1], L4.shape[1])
     if L5 is not None:
         min_len = min(min_len, L5.shape[1])
     
-    mix_L1 = L1[:, :min_len] * 0.7
-    mix_L2 = L2[:, :min_len] * 0.5
+    mix_L1 = L1[:, :min_len] * 0.8  # Boosted Drone foundation
+    mix_L2 = L2[:, :min_len] * 0.4  # Reduced Body (because it's thicker now)
     mix_L3 = L3[:, :min_len] * 0.4
-    mix_L4 = L4[:, :min_len] * 0.12 # Boosted Binaural
+    mix_L4 = L4[:, :min_len] * 0.12
     
     layers_to_mix = [mix_L1, mix_L2, mix_L3, mix_L4]
     if L5 is not None:
