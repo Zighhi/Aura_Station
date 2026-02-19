@@ -28,39 +28,38 @@ We do not feed raw text to the MusicGen model. Instead, we use a **two-stage pro
 
 ---
 
-## 3. The V6 Dynamic Engine (`src/audio_engine.py`)
+## 3. The V7 Dynamic Engine (`src/audio_engine.py`)
 
-This is the heart of the system. It transforms short 30s samples into 10-minute evolving soundscapes using a **Tri-Band Layering System**.
+This is the heart of the system. It transforms short 30s samples into 10-minute evolving soundscapes using a **Tri-Band Layering System** with analog-style modulation.
 
 ### 3.1. Layer 1: The Deep Drone (Foundation)
 *   **Source:** Atmospheric Sample A.
 *   **Process:**
-    *   **PaulStretch:** Time-stretched by ~20x using a windowed overlap-add algorithm. This smears transients into a continuous texture.
-    *   **Modulation:** Slow Chorus (0.05Hz) to add stereo width and subtle movement.
-    *   **Filtering:** Low-Pass Filter (< 450Hz) to occupy the sub-bass/bass frequencies.
+    *   **PaulStretch:** Time-stretched by ~20x using a windowed overlap-add algorithm.
+    *   **Filtering:** Low-Pass Filter (< 800Hz) to occupy the bass and lower-mids. (V7 Update: Raised cutoff for warmth).
+    *   **Modulation:** Slow Chorus (0.05Hz) to add stereo width.
     *   **Tremolo:** Amplitude Modulation (AM) at ~0.1Hz to make the drone "breathe."
 
 ### 3.2. Layer 2: The Body (Emotion)
 *   **Source:** Atmospheric Sample B.
 *   **Process:**
-    *   **PaulStretch:** Time-stretched by ~20x.
-    *   **Modulation:** Phaser (0.2Hz) to create swirling spectral notches.
-    *   **Filtering:** Band-Pass (High-Pass > 150Hz + Low-Pass < 2000Hz) to sit in the mid-range without muddying the drone.
-    *   **Delay:** Feedback delay to smear the texture further.
+    *   **Filtering:** Band-Pass (High-Pass > 80Hz + Low-Pass < 4000Hz).
+    *   **V7 Warmth:** High-Pass lowered to 80Hz to preserve the "chest" of the sound.
+    *   **Modulation:** Phaser (0.2Hz) + **Wide Delay** (randomized 0.1s - 1.2s) for deep echoes.
 
 ### 3.3. Layer 3: The Texture (Air)
 *   **Source:** Atmospheric Sample C.
 *   **Process:**
-    *   **Filtering:** High-Pass (> 1500Hz) to isolate "sparkle" and "air."
+    *   **Filtering:** High-Pass (> 600Hz) to isolate "sparkle."
+    *   **V7 Tape Wobble:** Uses a **Delay + Chorus** chain to simulate unstable tape echoes (pitch drift).
     *   **Modulation:** Fast Phaser (1.0Hz) for shimmering movement.
 
 ### 3.4. Layer 4: The Organic Pulse (Rhythm)
 *   **Source:** Percussive Loop Sample.
 *   **Logic:**
-    *   **No Stretching:** The rhythm is preserved.
-    *   **Granular Shuffling:** The loop is sliced into 8 grains. Every bar, these grains are randomly reordered (keeping the downbeat anchored 50% of the time).
-    *   **Probabilistic Density:** Randomly silences entire bars (20% chance) to create organic rests.
-    *   **Feedback Delay:** Fills the silent gaps with "ghost" echoes.
+    *   **Granular Shuffling:** The loop is sliced into 8 grains and randomly reordered every bar.
+    *   **Probabilistic Density:** Randomly silences bars (20% chance).
+    *   **Modulated Delay:** Uses a dedicated delay line to smooth over the granular cuts.
 
 ### 3.5. Layer 5: The Binaural Engine (Focus)
 *   **Logic:** Pure DSP Sine Wave Generation.

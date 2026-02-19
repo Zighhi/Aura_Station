@@ -79,21 +79,21 @@ To generate soundscape(s) for specific themes, run the following command from th
 
 ## Documentation
 - **[User Manual](docs/USER_MANUAL.md):** Simple, step-by-step guide for generating soundscapes.
-- **[Technical Deep Dive](docs/TECHNICAL_Deep_Dive.md):** A comprehensive architectural overview of the V6 Engine, detailing the signal flow, DSP algorithms, and granular pulse logic.
+- **[Technical Deep Dive](docs/TECHNICAL_Deep_Dive.md):** Comprehensive overview of the V7 Engine, DSP signal flow, and algorithms.
 
-## Current Status & Progress (V6 "Organic" Engine)
+## Current Status & Progress (V7 "Analog Warmth" Engine)
 
-The project has reached a stable, production-ready state with the release of the **V6 Dynamic Engine**.
+The project is running on the **V7 Dynamic Engine**, optimized for organic texture and warmth.
 
 - **Generative DSP:**
-    - **Tri-Band Layering:** Automatically separates Low (Drone), Mid (Body), and High (Texture) frequencies for a clean mix.
-    - **Organic Pulse:** Uses granular shuffling and probabilistic density to turn short loops into evolving, non-repetitive rhythmic textures.
-    - **Dual Convolution:** Combines per-layer depth with a global master-bus "room" for hyper-realistic spatialization.
+    - **Warm Tri-Band:** Revised EQ curves (80Hz HPF / 800Hz LPF) to restore the "body" and "chest" of the sound.
+    - **Tape Wobble:** "Texture" layers now use a Delay+Chorus chain to simulate unstable tape echoes.
+    - **Organic Pulse:** Granular shuffling and probabilistic density for evolving rhythms.
+    - **Dual Convolution:** Hyper-realistic spatialization using external IRs.
 - **Workflow:**
-    - **Manifests:** Full JSON logging for every generated track.
-    - **History Tracking:** Prevents duplicate sample combinations.
-    - **Asset Management:** Automated folder structures for Themes and Loops.
+    - **Manifests:** Full JSON logging.
+    - **History Tracking:** Deduplication logic.
+    - **Asset Management:** Theme-based organization.
 
 ## Next Steps
-- **Production Run:** Continue generating high-volume batches for the channel.
-- **Quality QA:** Listen to V6 outputs and fine-tune the "Granular Shuffle" probability if rhythms feel too chaotic.
+- **Visual Integration:** Explore automated video generation.
