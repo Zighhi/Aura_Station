@@ -19,31 +19,43 @@ os.makedirs(cache_dir, exist_ok=True)
 os.environ['HF_HUB_DISABLE_SYMLINKS_WARNING'] = '1' # Suppress symlink warning
 
 from transformers import pipeline
-from src.prompt_engineering import WaterPromptAgent, FirePromptAgent, EarthPromptAgent
+from src.prompt_engineering import WaterPromptAgent, FirePromptAgent, EarthPromptAgent, PercussivePromptAgent
 
 # --- 1. PROMPT GENERATION ---
 
-def get_theme_agent(theme):
-    """Returns the appropriate PromptAgent for a given theme."""
+def get_theme_agent(theme, type="atmospheric"):
+    """Returns the appropriate PromptAgent for a given theme and type."""
+    if type == "percussive":
+        return PercussivePromptAgent()
+    
     if theme == "Water": return WaterPromptAgent()
     elif theme == "Fire": return FirePromptAgent()
     elif theme == "Earth": return EarthPromptAgent()
     return None
 
-def generate_rich_prompt(theme, text_gen_model="gpt2-medium"):
+def generate_rich_prompt(theme, type="atmospheric", text_gen_model="gpt2-medium"):
     """
     Uses a hybrid approach:
     1. Generates a structured base prompt from a specialized PromptAgent.
-    2. Uses a text-generation model to creatively expand it.
+    2. Uses a text-generation model to creatively expand it (for atmospheric only).
     """
-    agent = get_theme_agent(theme)
+    agent = get_theme_agent(theme, type)
     if not agent:
         print(f"No specialized agent found for theme: {theme}")
         return None
     
-    base_prompt = agent.generate_prompt()
+    # Percussive agent handles theme internally
+    if type == "percussive":
+        base_prompt = agent.generate_prompt(theme)
+    else:
+        base_prompt = agent.generate_prompt()
+        
     print(f"--- Base Structured Prompt ---")
     print(base_prompt)
+
+    # For Percussive loops, the structured prompt is usually enough. Expansion often dilutes the rhythm.
+    if type == "percussive":
+        return f"Rhythmic loop: {base_prompt}, high fidelity, 3d spatial audio."
 
     print(f"--- Initializing '{text_gen_model}' for prompt expansion... ---")
     try:
@@ -90,9 +102,9 @@ def generate_rich_prompt(theme, text_gen_model="gpt2-medium"):
 
 # --- 2. AUDIO GENERATION ---
 
-def generate_audio_from_prompt(prompt, audio_model="facebook/musicgen-small"):
+def generate_audio_from_prompt(prompt, type="atmospheric", audio_model="facebook/musicgen-small"):
     """
-    Generates a high-quality, long-form creative soundscape from a text prompt.
+    Generates a high-quality creative soundscape or loop from a text prompt.
     """
     print(f"--- Initializing '{audio_model}' for audio generation... ---")
     device = 0 if torch.cuda.is_available() else -1
@@ -102,64 +114,94 @@ def generate_audio_from_prompt(prompt, audio_model="facebook/musicgen-small"):
         print(f"Error loading audio generation model: {e}")
         return None, None
 
-    print(f"--- Generating soundscape for ~30 seconds... (This will take a while with the '{audio_model}' model) ---")
+    # Determine length based on type
+    if type == "percussive":
+        # 750 tokens is approx 15 seconds. Good for loops.
+        token_count = 750
+        trim = False
+        print(f"--- Generating rhythmic loop (~15s)... ---")
+    else:
+        # Atmospheric: Generate 33s, trim to 30s
+        token_count = 1650 
+        trim = True
+        print(f"--- Generating soundscape (~33s -> 30s)... ---")
+
     try:
-        # 1536 tokens is approximately 30 seconds for this model
-        music = synthesiser(prompt, forward_params={"do_sample": True, "max_new_tokens": 1536})
-        return music["audio"], music["sampling_rate"]
+        music = synthesiser(prompt, forward_params={"do_sample": True, "max_new_tokens": token_count})
+        audio_data = music["audio"]
+        sampling_rate = music["sampling_rate"]
+        
+        if trim:
+            # Slice to exactly 30 seconds
+            target_length_samples = sampling_rate * 30
+            audio_data = audio_data[:target_length_samples]
+        
+        return audio_data, sampling_rate
     except Exception as e:
         print(f"Error during audio generation: {e}")
         return None, None
 
 # --- 3. MAIN EXECUTION ---
 
-def main(theme, output_dir="audio_samples/raw"):
+def main(theme, type="atmospheric", output_dir="audio_samples/raw"):
     """
     Main function to run the end-to-end soundscape generation pipeline.
     """
-    print(f"===== STARTING BASE SAMPLE GENERATION FOR THEME: {theme} =====")
+    print(f"===== STARTING GENERATION: {theme} ({type.upper()}) =====")
     
-    rich_prompt = generate_rich_prompt(theme)
+    rich_prompt = generate_rich_prompt(theme, type=type)
     if not rich_prompt:
         print("Halting pipeline due to prompt generation failure."); return
 
-    audio_data, sampling_rate = generate_audio_from_prompt(rich_prompt)
+    audio_data, sampling_rate = generate_audio_from_prompt(rich_prompt, type=type)
     if audio_data is None:
         print("Halting pipeline due to audio generation failure."); return
 
     # --- Save the audio file ---
-    theme_output_dir = os.path.join(output_dir, theme.lower())
+    # Organize percussive loops into a subfolder? Or just suffix?
+    # Let's use subfolder: audio_samples/raw/water/loops/
+    if type == "percussive":
+        theme_output_dir = os.path.join(output_dir, theme.lower(), "loops")
+    else:
+        theme_output_dir = os.path.join(output_dir, theme.lower())
+        
     os.makedirs(theme_output_dir, exist_ok=True)
     
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"base_sample_{theme.lower()}_{timestamp}.wav"
+    filename = f"{type}_loop_{theme.lower()}_{timestamp}.wav" if type == "percussive" else f"base_sample_{theme.lower()}_{timestamp}.wav"
     output_path = os.path.join(theme_output_dir, filename)
     
     print(f"--- Saving audio to {output_path}... ---")
-    # Normalize and convert to 16-bit PCM for standard WAV format
+    # Normalize
     normalized_audio = audio_data / np.max(np.abs(audio_data)) * 0.9
     pcm_audio = (normalized_audio * 32767).astype(np.int16)
     
     scipy.io.wavfile.write(output_path, rate=sampling_rate, data=pcm_audio)
     
-    print(f"===== SUCCESSFULLY GENERATED AND SAVED BASE SAMPLE! =====")
-    print(f"File location: {output_path}")
+    print(f"===== SUCCESS! Saved to {output_path} =====")
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Generate base soundscape samples based on themes.")
+    parser = argparse.ArgumentParser(description="Generate soundscapes or loops based on themes.")
     parser.add_argument(
         "themes", 
         type=str, 
         nargs="+",
         choices=["Water", "Fire", "Earth", "All"],
-        help="The theme(s) for the soundscape generation. Use 'All' for all themes."
+        help="The theme(s) for the generation. Use 'All' for all themes."
     )
     parser.add_argument(
         "--count",
         type=int,
         default=1,
         help="Number of samples to generate per theme (default: 1)."
+    )
+    parser.add_argument(
+        "--type",
+        type=str,
+        default="atmospheric",
+        choices=["atmospheric", "percussive"],
+        help="Type of generation: 'atmospheric' (30s drone) or 'percussive' (15s rhythm loop)."
     )
     
     args = parser.parse_args()
@@ -171,4 +213,4 @@ if __name__ == "__main__":
     for theme in target_themes:
         for i in range(args.count):
             print(f"\n>>> Generating Sample {i+1}/{args.count} for Theme: {theme} <<<")
-            main(theme)
+            main(theme, type=args.type)

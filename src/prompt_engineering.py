@@ -117,6 +117,42 @@ class EarthPromptAgent(PromptAgent):
         )
         return prompt.replace("  ", " ").strip()
 
+class PercussivePromptAgent(PromptAgent):
+    """Generates prompts for sparse, polyrhythmic texture loops."""
+    def __init__(self):
+        super().__init__()
+        self.base_keywords = [
+            "minimalist percussion loop", "sparse rhythmic texture", "irregular polyrhythm", 
+            "organic pulse", "hollow wooden knocks", "soft stone clicks", "gentle rain droplets pattern"
+        ]
+        self.mood_keywords = ["hypnotic", "steady", "dry", "crisp", "delicate", "intricate", "meditative"]
+        
+        self.structures = [
+            "A {mood_keyword} {keyword} featuring {element_keyword}.",
+            "Sparse, {mood_keyword} rhythm with {element_keyword}, 60 bpm, odd time signature.",
+            "An organic {keyword} made of {element_keyword}, panning slowly.",
+            "{element_keyword} playing a slow, {mood_keyword} pattern for focus."
+        ]
+
+    def generate_prompt(self, theme):
+        """Generates a rhythmic prompt tailored to the specific theme."""
+        if theme == "Water":
+            elements = ["water droplets hitting a cave floor", "rain tapping on a leaf", "rhythmic stream bubbles", "ice cracking gently"]
+        elif theme == "Fire":
+            elements = ["crackling wood embers", "rhythmic fire popping", "dry leaves crunching", "sparking charcoal"]
+        elif theme == "Earth":
+            elements = ["deep wood blocks", "stone shuffling on gravel", "hollow log tapping", "distant seismic thuds"]
+        else:
+            elements = ["soft metallic chimes", "wooden shaker", "clay pot percussion"]
+
+        structure = random.choice(self.structures)
+        prompt = structure.format(
+            keyword=random.choice(self.base_keywords),
+            element_keyword=random.choice(elements),
+            mood_keyword=random.choice(self.mood_keywords)
+        )
+        return prompt.replace("  ", " ").strip()
+
 if __name__ == '__main__':
     # Example usage:
     fire_agent = FirePromptAgent()

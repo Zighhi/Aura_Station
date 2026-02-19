@@ -1,0 +1,85 @@
+
+Format(s): 
+B-Format (4 Channel Files)
+
+B-Format: Multichannel: 
+
+    AR_bformat_S1R1_1.wav
+
+Sample Rate: 44.1 kHz
+Number of Channels: 4
+Bits per Sample: 24
+Duration: 5 s
+File Size: 3.1 MB
+File Format: wav
+
+
+    AR_bformat_S1R1_2.wav
+
+Sample Rate: 44.1 kHz
+Number of Channels: 4
+Bits per Sample: 24
+Duration: 5 s
+File Size: 3.1 MB
+File Format: wav
+
+
+    AR_bformat_S1R1_3.wav
+
+Sample Rate: 44.1 kHz
+Number of Channels: 4
+Bits per Sample: 24
+Duration: 5 s
+File Size: 2.7 MB
+File Format: wav
+
+
+    AR_bformat_S1R1_4.wav
+
+Sample Rate: 44.1 kHz
+Number of Channels: 4
+Bits per Sample: 24
+Duration: 5 s
+File Size: 2.6 MB
+File Format: wav
+
+
+    AM_spist_S2R1.wav
+
+Sample Rate: 44.1 kHz
+Number of Channels: 4
+Bits per Sample: 24
+Duration: 6 s
+File Size: 3.2 MB
+File Format: wav
+
+
+    AM_spist_S3R1.wav
+
+Sample Rate: 44.1 kHz
+Number of Channels: 4
+Bits per Sample: 16
+Duration: 6 s
+File Size: 3.2 MB
+File Format: wav
+
+
+    AM_spist_S4R2_1.wav
+
+Sample Rate: 44.1 kHz
+Number of Channels: 4
+Bits per Sample: 24
+Duration: 6 s
+File Size: 3.2 MB
+File Format: wav
+
+
+    AM_spist_S4R2_2.wav
+
+Sample Rate: 44.1 kHz
+Number of Channels: 4
+Bits per Sample: 24
+Duration: 6 s
+File Size: 3.2 MB
+File Format: wav
+

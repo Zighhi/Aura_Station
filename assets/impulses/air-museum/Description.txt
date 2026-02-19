@@ -1,0 +1,30 @@
+Description:
+Impulse responses recorded in T2 Hangar, Yorkshire Air Museum. The hangar stores around 20 different sizes of the planes. Receiver S1R1 recorded with logarithmic sine sweep. Receiver S2R1, S3R1,S4R2 recorded with starter pistol at different distances. In each case the microphone is pointed directly at the loudspeaker or starter pistol.
+
+Measurement Team:
+
+Frank Stevens
+Richie Cully
+Santiago Hoyos
+Sinuo Feng
+
+Capture Date:
+Wed, 08/03/2023
+
+Source Sound:
+Swept Sine; 20 Hz - 20 kHz; 15 seconds
+
+Source Sound Category:
+Swept sine (logarithmic)
+
+Input:
+Genelec 8130A loudspeaker, Stater Pistol
+
+Microphone:
+Zoom H3-VR
+
+Space Category:
+Hall
+
+Generation Type:
+Real World

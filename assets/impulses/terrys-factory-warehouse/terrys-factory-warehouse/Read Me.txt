@@ -1,0 +1,74 @@
+
+Format(s): 
+Mono
+Stereo (Stereo Files)
+5.1 Surround (6 Channel Files)
+B-Format (4 Channel Files)
+
+Mono: 
+
+    terrys_warehouse_omni.wav
+
+Sample Rate: 48 kHz
+Number of Channels: 1
+Bits per Sample: 24
+Duration: 22.67 s
+File Size: 3.11 MB
+File Format: wav
+Source Sound: Genelec S30D, 15 second log. sine sweep
+Microphone: Soundfield Microphone, SPS422B
+Source Receiver Distance (m): 28.35 m
+Source Height: 1.5 m
+Receiver Height: 1.5 m
+Temperature: 16 °C
+
+Stereo: 
+
+    terrys_warehouse_stereo.wav
+
+Sample Rate: 48 kHz
+Number of Channels: 2
+Bits per Sample: 24
+Duration: 23.01 s
+File Size: 6.32 MB
+File Format: wav
+Source Sound: Genelec S30D, 15 second log. sine sweep
+Microphone: Cardioid Microphone, Neumann KM 140
+Source Receiver Distance (m): 28.35 m
+Source Height: 1.5 m
+Receiver Height: 1.5 m
+Temperature: 16 °C
+
+B-Format: Multichannel: 
+
+    terrys_warehouse_b_format.wav
+
+Sample Rate: 48 kHz
+Number of Channels: 4
+Bits per Sample: 24
+Duration: 11.8 s
+File Size: 6.48 MB
+File Format: wav
+Source Sound: Genelec S30D, 15 second log. sine sweep
+Microphone: Soundfield Microphone, SPS422B
+Source Receiver Distance (m): 28.35 m
+Source Height: 1.5 m
+Receiver Height: 1.5 m
+Temperature: 16 °C
+
+5.1 Surround: 
+
+    terrys_warehouse_5-0.wav
+
+Sample Rate: 48 kHz
+Number of Channels: 6
+Bits per Sample: 24
+Duration: 8.8 s
+File Size: 7.25 MB
+File Format: wav
+Source Sound: Genelec S30D, 15 second log. sine sweep
+Microphone: Soundfield Microphone, SPS422B
+Source Receiver Distance (m): 28.35 m
+Source Height: 1.5 m
+Receiver Height: 1.5 m
+Temperature: 16 °C

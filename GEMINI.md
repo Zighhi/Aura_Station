@@ -77,15 +77,22 @@ To generate soundscape(s) for specific themes, run the following command from th
 - Generated audio is saved as 16-bit PCM WAV files in `audio_samples/raw/{theme}/`.
 - Filenames follow the pattern: `base_sample_{theme}_{timestamp}.wav`.
 
-## Current Status & Progress
+## Documentation
+- **[Technical Deep Dive](docs/TECHNICAL_Deep_Dive.md):** A comprehensive architectural overview of the V6 Engine, detailing the signal flow, DSP algorithms, and granular pulse logic.
 
-- **GPU Acceleration:** Successfully enabled (using `device=0`). The pipeline is running efficiently on the GPU.
-- **Hybrid Prompting:** Implemented a sophisticated prompting strategy combining specialized `PromptAgent` classes with `gpt2-medium` expansion.
-- **Impact-Free Endings:** Implemented a "Generate-and-Trim" strategy (generating 33s, trimming to 30s) to remove unwanted climax/impact sounds at the end of samples.
-- **Study Optimization:** All prompts are now tuned for study-safe, steady-state, and non-distracting textures.
-- **Batch Processing:** The script now supports multi-theme batch generation via CLI.
+## Current Status & Progress (V6 "Organic" Engine)
+
+The project has reached a stable, production-ready state with the release of the **V6 Dynamic Engine**.
+
+- **Generative DSP:**
+    - **Tri-Band Layering:** Automatically separates Low (Drone), Mid (Body), and High (Texture) frequencies for a clean mix.
+    - **Organic Pulse:** Uses granular shuffling and probabilistic density to turn short loops into evolving, non-repetitive rhythmic textures.
+    - **Dual Convolution:** Combines per-layer depth with a global master-bus "room" for hyper-realistic spatialization.
+- **Workflow:**
+    - **Manifests:** Full JSON logging for every generated track.
+    - **History Tracking:** Prevents duplicate sample combinations.
+    - **Asset Management:** Automated folder structures for Themes and Loops.
 
 ## Next Steps
-- **Audio Post-Processing:** Develop scripts for looping, layering, and mixing these base samples into 1-hour+ soundscapes.
-- **Visual Integration:** Explore automated video generation to accompany the audio for the YouTube channel.
-- **Quality Upgrades:** Monitor performance and consider moving to `musicgen-medium` if generation speed allows for longer source material.
+- **Production Run:** Continue generating high-volume batches for the channel.
+- **Quality QA:** Listen to V6 outputs and fine-tune the "Granular Shuffle" probability if rhythms feel too chaotic.
